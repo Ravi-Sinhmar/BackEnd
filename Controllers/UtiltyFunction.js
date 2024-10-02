@@ -2,7 +2,7 @@ const puppeteer =require("puppeteer");
 const GoInstagram=async()=>{
     const browser = await puppeteer.launch({
         // ...(process.env.NODE_ENV !== 'production' && { headless: false }),
-        userDataDir: './user_data',
+        // userDataDir: './user_data',
         args: [
           "--disable-setuid-sandbox",
           "--no-sandbox",
