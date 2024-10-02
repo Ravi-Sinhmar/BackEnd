@@ -41,7 +41,6 @@ const login = async (username, password,page) => {
     await page.type('input[name="username"]', username);
     await page.type('input[name="password"]', password);
     await page.click('button[type="submit"]');
-  
     return  true;
     
   };
