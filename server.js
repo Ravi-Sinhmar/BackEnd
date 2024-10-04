@@ -8,6 +8,7 @@ const PostData = require('./Models/postData');
 const profile=require("./Controllers/Profile")
 const postSave=require("./Database/PostSave")
 const post=require("./Controllers/Post");
+const {openInsta}=require("./Controllers/Public");
 const app = express();
 
 
@@ -18,6 +19,14 @@ app.use(cors());
 app.use(express.json()); // Make sure to include this line
 
 // API to get Insta chats
+
+
+
+// PublicPostsExtractor
+
+app.get('/check', async(req,res)=>{
+  let test = await openInsta();
+});
 
 app.get('/login', async (req, res) => {
     try {
@@ -42,7 +51,10 @@ app.post("/posts",async(req,res)=>{
       res.status(500).json({status:'fail',message:"Unauthorized access"})
       await browser.close();
     }
-    const username=req.body.data;
+    const username=req.body.instaUsername;
+    const numberOfPosts=req.body.numberOfPosts;
+     console.log("inserver",numberOfPosts);
+
     // const username = 'liyanshmehta';
     await handleDialogBox(page, 'not now');
    
@@ -53,7 +65,7 @@ app.post("/posts",async(req,res)=>{
     }
     else{
       try {
-        const extractedPosts = await post(username,page);
+        const extractedPosts = await post(username,numberOfPosts,page);
         const dbSaved = await postSave(username,extractedPosts);
         if(!dbSaved || dbSaved.success==false){
           res.status(404).json({status:'fail',type:'404' ,content:"Something went wrong with db"});
